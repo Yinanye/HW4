@@ -16,6 +16,7 @@ dbname = os.environ.get('DBNAME')
 #conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(secrets.dbuser, secrets.dbpass, secrets.dbhost, secrets.dbname)
 conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(dbuser, dbpass, dbhost, dbname)
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY']='SuperSecretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = conn
@@ -78,7 +79,7 @@ def pokemon(PokemonId):
 
 @app.route('/pokemon/<int:PokemonId>/update', methods=['GET','POST'])
 def update_pokemon(PokemonId):
-    pokemon = yye5_pokemonapp.query.get_or_404(PokemonId)
+    pokemon = yye5_pokemonapp.query.get_or_404(pokemon_id)
     form = PokemonForm()
     if form.validate_on_submit():
         pokemon.Pokemon_Name = form.Pokemon_Name.data
@@ -121,4 +122,5 @@ def delete_pokemon(PokemonId):
 
 
 if __name__ == '__main__':
+    app.run(debug=True)
     app.run(debug=True)
