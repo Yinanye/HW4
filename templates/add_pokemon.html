@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block body %}
+<div>
+
+  <h3>{{ legend }}</h3>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert" id="flash">
+    {% for message in messages %}
+    <strong>Alert!</strong> {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+  </div>
+
+
+  <form method="POST" action="">
+
+    {{ form.csrf_token }}
+    {{ form.Pokemon_Name.label }} {{form.Pokemon_Name(size=20) }}
+    {{ form.Type1.label }} {{form.Type1(size=20) }}
+    {{ form.Type2.label }} {{form.Type2(size=20) }}
+    {{ form.HP.label }} {{form.HP(size=20) }}
+    {{ form.Attack.label }} {{form.Attack(size=20) }}
+    {{ form.Defense.label }} {{form.Defense(size=20) }}
+    {{ form.Sp_Atk.label }} {{form.Sp_Atk(size=20) }}
+    {{ form.Sp_Def.label }} {{form.Sp_Def(size=20) }}
+    {{ form.Speed.label }} {{form.Speed(size=20) }}
+
+
+    <input type="submit" value="Save">
+
+  </form>
+
+</div>
+
+{% endblock %}
