@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block body %}
+<div>
+
+  <h3>Add A New Pokemon</h3>
+
+  <form method="POST" action="{{url_for('add_pokemon') }}">
+
+    {{ form.csrf_token }}
+    {{ form.pokemon_name.label }} {{form.pokemon_name(size=20) }}
+
+    <input type="submit" value="Add Pokemon">
+
+  </form>
+
+</div>
+
+{% endblock %}
