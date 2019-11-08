@@ -3,9 +3,62 @@
 {% extends 'base.html' %}
 
 {% block body %}
-Hello world!
+<p><a href="{{ url_for('add_pokemon')}}"> Add a new pokemon</a></p>
+
+{% with messages = get_flashed_messages() %}
+ {% if messages %}
+ <div class="alert alert-warning alert-dismissible fade show" role="alert" id="flash">
+   {% for message in messages %}
+   <strong>Alert!</strong> {{ message }}
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+   </button>
+   {% endfor %}
+   {% endif %}
+   {% endwith %}
+ </div>
 
 
+{% if pokemon %}
+    <table>
+        <thead>
+            <tr>
+                <th>Pokemon ID</th>
+                <th>Pokemon Name</th>
+                <th>Type1</th>
+                <th>Type2</th>
+                <th>HP</th>
+                <th>Attack</th>
+                <th>Defense</th>
+                <th>Sp_Atk</th>
+                <th>Sp_Def</th>
+                <th>Speed</th>
+            </tr>
+        </thead>
 
+        <tbody>
+            {% for row in pokemon %}
+            <tr>
+                <td>{{ row.PokemonId}}</td>
+                <td>{{ row.Pokemon_Name}}</td>
+                <td>{{ row.Type1}}</td>
+                <td>{{ row.Type2}}</td>
+                <td>{{ row.HP}}</td>
+                <td>{{ row.Attack}}</td>
+                <td>{{ row.Defense}}</td>
+                <td>{{ row.Sp_Atk}}</td>
+                <td>{{ row.Sp_Def}}</td>
+                <td>{{ row.Speed}}</td>
 
+                    <td>
+        <form action="{{ url_for('pokemon', PokemonId=row.PokemonId) }}" method="POST">
+          <input type="submit" value="Details" class="btn btn-info" />
+        </form>
+        </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
 {% endblock %}
