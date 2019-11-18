@@ -5,16 +5,12 @@ from wtforms import StringField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 import pymysql
-#import secrets
+import secrets
 import os
 
-dbuser = os.environ.get('DBUSER')
-dbpass = os.environ.get('DBPASS')
-dbhost = os.environ.get('DBHOST')
-dbname = os.environ.get('DBNAME')
 
-#conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(secrets.dbuser, secrets.dbpass, secrets.dbhost, secrets.dbname)
-conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(dbuser, dbpass, dbhost, dbname)
+
+conn = "mysql+pymysql://{0}:{1}@{2}/{3}".format(secrets.dbuser, secrets.dbpass, secrets.dbhost, secrets.dbname)
 
 
 app = Flask(__name__)
@@ -57,6 +53,19 @@ class PokemonForm(FlaskForm):
 def index():
     all_pokemon = yye5_pokemonapp.query.all()
     return render_template('index.html', pokemon=all_pokemon, pageTitle='My Pokemon List')
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        form = request.form
+        search_value = form['search_string']
+        search = "%{0}%".format(search_value)
+        results = yye5_pokemonapp.query.filter(yye5_pokemonapp.Pokemon_Name.like(search)).all()
+        return render_template('index.html', pokemon=results, pageTitle='My Pokemon List', legend="Search Results")
+
+
+
 
 @app.route('/pokemon/new', methods=['GET', 'POST'])
 def add_pokemon():
@@ -109,7 +118,7 @@ def update_pokemon(PokemonId):
 
 
 
-@app.route('/pokemon/<int:PokemonId>/delete', methods=['POST'])
+@app.route('/pokemon/<int:PokemonId>/delete', methods=['GET','POST'])
 def delete_pokemon(PokemonId):
     if request.method == 'POST': #if it's a POST request, delete the friend from the database
         pokemon = yye5_pokemonapp.query.get_or_404(PokemonId)
@@ -122,5 +131,4 @@ def delete_pokemon(PokemonId):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
     app.run(debug=True)
